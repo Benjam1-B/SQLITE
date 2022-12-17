@@ -65,7 +65,8 @@ INSERT INTO categories (title) VALUES
 
 INSERT INTO recipes (title, slug, duration, user_id) VALUES 
     ('Soupe', 'soupe', 10, 1),
-    ('Madeleine', 'madeleine', 30, 1);
+    ('Madeleine', 'madeleine', 30, 1),
+    ('Salade de fruit', 'salade-de-fruit', 10, 1);
 
 INSERT INTO categories_recipes (recipe_id, category_id) VALUES  
     (1, 1), 
@@ -78,7 +79,8 @@ INSERT INTO ingredients (name) VALUES
     ('Levure chimique'),
     ('Beurre'),
     ('Lait'),
-    ('Oeuf');
+    ('Oeuf'),
+    ('Miel');
 
 INSERT INTO ingredients_recipes (recipe_id, ingredient_id, quantity, unit) VALUES
     (2, 1, 150, 'g'),
@@ -86,21 +88,24 @@ INSERT INTO ingredients_recipes (recipe_id, ingredient_id, quantity, unit) VALUE
     (2, 3, 8, 'g'),
     (2, 4, 100, 'g'),
     (2, 5, 50, 'g'),
-    (2, 6, 3, NULL);
+    (2, 6, 3, NULL),
+    (3, 1, 50, 'g');
 
 /*SELECT r.title
 FROM ingredients i
 JOIN ingredients_recipes ir ON ir.ingredient_id = i.id
 JOIN recipes r ON ir.recipe_id = r.id
-WHERE i.name = 'Oeuf';
+WHERE i.name = 'Oeuf';*/
 
-UPDATE ingredients_recipes
-SET quantity = 10
-WHERE recipe_id = 2 AND ingredient_id = 3;
+/*SELECT i.name, COUNT(ir.recipe_id) AS count, r.duration
+FROM ingredients i
+LEFT JOIN ingredients_recipes ir ON ir.ingredient_id = i.id
+LEFT JOIN recipes r ON ir.recipe_id = r.id
+GROUP BY i.name, r.duration;*/
 
-SELECT r.title, ir.quantity, ir.unit, i.name AS ingredient
-FROM recipes r
-JOIN ingredients_recipes ir ON ir.recipe_id = r.id
-JOIN ingredients i ON ir.ingredient_id = i.id;*/
-
-SELECT * FROM recipes WHERE id = 2;
+SELECT DISTINCT i.name
+FROM ingredients i
+LEFT JOIN ingredients_recipes ir ON ir.ingredient_id = i.id
+LEFT JOIN recipes r ON ir.recipe_id = r.id
+WHERE ir.recipe_id IS NOT NULL;
+--GROUP BY i.name, r.duration;
